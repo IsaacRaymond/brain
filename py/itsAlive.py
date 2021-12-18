@@ -1,11 +1,15 @@
 import pyttsx3
 import os
 from playsound import playsound
-import speech_recognition as sr
 from io import BytesIO
 import sounddevice as sd
 import random
 import math
+import sys
+
+sys.path.append('''C:/Developer/brain/py''')
+
+from listening import listening
 
 from check_for_words import check_for_words
 
