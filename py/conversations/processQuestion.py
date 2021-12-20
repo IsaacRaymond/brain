@@ -1,3 +1,9 @@
+import sys
+
+sys.path.append('/home/pi/brain/py/')
+
+from playText import playText
+
 def processQuestion(user_input):
     if (False):
         print('yes')

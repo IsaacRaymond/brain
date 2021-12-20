@@ -7,7 +7,7 @@ import random
 import math
 import sys
 
-sys.path.append('''C:/Developer/brain/py''')
+sys.path.append('/home/pi/brain/py/')
 
 from listening import listening
 
@@ -43,7 +43,6 @@ def itsAlive():
         print(a)
 
         if a == 'l':
-            print("listening")
             listening()
 #            print("Option {} was pressed\n".format(a))
         elif e == 'e':

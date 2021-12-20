@@ -1,3 +1,9 @@
+import sys
+
+sys.path.append('/home/pi/brain/py/')
+
+from playText import playText
+
 def checkConvoStatus(user_input):
     if (convotype == 1):
         if(check_for_words(user_input, ["leader"]) or check_for_words(user_input, ["I","think"])):

@@ -6,6 +6,12 @@ import csv
 #from tensorflow import keras
 import tensorflow as tf
 
+import sys
+
+sys.path.append('/home/pi/brain/py/')
+
+from playText import playText
+
 
 questions_statements = pd.read_csv('/Users/isaacraymond/Desktop/ai/questions_vs_statements_v1.0.csv')
 most_common_words = pd.read_csv('/Users/isaacraymond/Desktop/ai/most_common_words.csv')

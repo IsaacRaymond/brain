@@ -2,7 +2,30 @@
 import random
 import math
 
-numberDirections = 3
+import sys
+
+sys.path.append('/home/pi/brain/py/')
+
+from playText import playText
+
+
+inConvo = False
+
+peopleInHouse = ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"]
+
+diceroll = math.floor(random.random()*len(peopleInHouse))
+diceroll2 = math.floor(random.random()*len(peopleInHouse))
+
+mostHatedPerson = peopleInHouse[diceroll]
+mostLovedPerson = peopleInHouse[diceroll2]
+
+answerToLove = ""
+
+convotype = 0
+
+numberDirections = 8
+
+convotype = 0
 
 diceroll = 0
 diceroll = math.floor(random.random()*numberDirections)
@@ -15,14 +38,14 @@ def startConvo():
 
         if (diceroll2 == 0):
             playText("I am curious.  Who is the leader of your planet?")
-            print("I am curious.  Who is the leader of your planet?")
-
+            listening()
+    
         elif (diceroll2 == 1):
             playText("For no particular reason, I need to know who your world leader is.  Could you tell me?")
-            print("For no particular reason, I need to know who your world leader is.  Could you tell me?")
+            listening()
         else:
             playText("So, what's the deal with our world leader, anyway?  What's his or her name again?")
-            print("So, what's the deal with our world leader, anyway?  What's his or her name again?")
+            listening()
 
     if (diceroll == 1):
         #inConvo = True
@@ -31,18 +54,19 @@ def startConvo():
 
         if (diceroll2 == 0):
             playText("What is love?")
-            print("What is love?")
+            listening()
 
         elif (diceroll2 == 1):
             playText("What does it mean to love someone?")
-            print("What does it mean to love someone?")
+            listening()
 
         else:
             playText("Could you explain the concept of love to me?")
-            print("Could you explain the concept of love to me?")
+            listening()
 
     ##Random crap
-    elif (diceroll == (numberDirections-1)):
+    #elif (diceroll == (numberDirections-1)):
+    else:
         diceroll2 = math.floor(random.random()*15)
 
         if (diceroll2 == 0):

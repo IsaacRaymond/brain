@@ -1,3 +1,33 @@
+import random
+import math
+import sys
+sys.path.append('/home/pi/brain/py/')
+sys.path.append('/home/pi/brain/py/commands/')
+sys.path.append('/home/pi/brain/py/games/tic-tac-toe/')
+from playMeme import playMeme
+from playSomething import playSomething
+from check_for_words import check_for_words
+from shutUp import shutUp
+from checkConvoStatus import checkConvoStatus
+from startConvo import startConvo
+from tic_tac_toe import startGame
+
+inConvo = False
+
+peopleInHouse = ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"]
+
+diceroll = math.floor(random.random()*len(peopleInHouse))
+diceroll2 = math.floor(random.random()*len(peopleInHouse))
+
+mostHatedPerson = peopleInHouse[diceroll]
+mostLovedPerson = peopleInHouse[diceroll2]
+
+answerToLove = ""
+
+convotype = 0
+# convotype 1 is 'leader of planet'
+# convotype 2 is 'love'
+
 def processStatement(user_input):
     #if (inConvo):
     #    checkConvoStatus(user_input)
@@ -5,6 +35,9 @@ def processStatement(user_input):
 
     if (False):
         print('yes')
+        
+    elif (check_for_words(user_input, ["play", "tic"]) or check_for_words(user_input, ["play", "toe"])):
+        startGame()
 
     elif (check_for_words(user_input,["play"])):
         playSomething(user_input)

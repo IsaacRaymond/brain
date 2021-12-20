@@ -2,7 +2,7 @@ import sys
 import sounddevice as sd
 import speech_recognition as sr
 
-sys.path.append('''C:/Developer/brain/py''')
+sys.path.append('/home/pi/brain/py/')
 
 import time
 import random
@@ -25,41 +25,30 @@ def get_users_move():
     return users_move
 
 def listening2():
-    print("listening called")
-    with sd.Stream(callback=receive_sound):
-        sd.sleep(4000)
-        print("done sleeping")
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        audio = r.listen(source)
 
-def receive_sound(indata, outdata, frames, time, status):
-    volume_norm = np.linalg.norm(indata)*10
+    try:
+        user_input =  r.recognize_google(audio)
+        print(user_input)
+        return user_input.lower()
 
-    if volume_norm > 30:
-        print("loud enough")
-        print(volume_norm)
-        r = sr.Recognizer()
-        with sr.Microphone() as source:
-            audio = r.listen(source)
-
-        try:
-            print("Google audio:")
-            user_input = lower( r.recognize_google(audio) )
-            print(user_input)
-            set_users_move(user_input)
-
-        except:
-            print('cant get audio')
-
+    except sr.UnknownValueError:
+        print("Google Speech Recognition could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 def startGame():
     diceroll = math.floor(random.random()*2)
 
     if diceroll == 0:
-        #playText("I will start.  I will be 'x'.  You be something else.")
+        playText("I will start.  I will be 'x'.  Key words are bottom, center, up, left, right")
         #playText("When it is your turn, I will tell you.  State your move like this:  bottom left, or center, or center right.  The key words are left, right, top, bottom, and center.")
         computerMove()
 
     else:
-        #playText("You go first.  You can be whatever letter you want, just let me be O.  State your move like this:  bottom left, or center, or center right, or top center.  The key words are left, right, top, bottom, and center.")
+        playText("You go first.  Key words are bottom, center, up, left, right")
         getHumanInput()
 
 
@@ -91,8 +80,6 @@ def checkIfOccupied(givenMove):
 
 
 def wordValueOfMove(locationChoice):
-    playText(type(locationChoice[0]))
-    playText(type(0))
 
     if locationChoice[0]==0 and locationChoice[1]==0:
         return "top left"
@@ -164,10 +151,10 @@ def checkForWin():
 
 def getHumanInput():
     playText("What is your move?")
-    listening2()
+    
 
     print("getting move")
-    move = get_users_move()
+    move = listening2()
     print(move)
 
     if(check_for_words(move, ["top","left"])):
@@ -287,5 +274,3 @@ def getHumanInput():
             else:
                 computerMove()
 
-
-startGame()

@@ -1,9 +1,15 @@
 import random
 import math
+import sys
 
-diceroll = math.floor(random.random()*9)
+sys.path.append('/home/pi/brain/py/')
+
+from playText import playText
+
 
 def shutUp():
+    diceroll = math.floor(random.random()*9)
+    
     if (diceroll == 0):
         playText("Shut up.")
 
