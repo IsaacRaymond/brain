@@ -5,12 +5,17 @@ import sys
 import random
 import math
 
-sys.path.append('/home/pi/brain/py/')
+sys.path.append('/home/pi/brain/')
+sys.path.append('/home/pi/brain/py')
 
 from processSpeaking import processSpeaking
-from playText import playText
 
 def listening():
+    userInput = input("type your voice words")
+    print(userInput)
+    processSpeaking(userInput.lower())
+
+def listening2():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)

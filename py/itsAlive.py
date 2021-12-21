@@ -13,19 +13,24 @@ from listening import listening
 
 from check_for_words import check_for_words
 
+global inConvo
 inConvo = False
 
+global peopleInHouse
 peopleInHouse = ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"]
 
 diceroll = math.floor(random.random()*len(peopleInHouse))
 diceroll2 = math.floor(random.random()*len(peopleInHouse))
 
+global mostHatedPerson
 mostHatedPerson = peopleInHouse[diceroll]
+global mostLovedPerson
 mostLovedPerson = peopleInHouse[diceroll2]
-
+global answerToLove
 answerToLove = ""
+global answerToLeader
+answerToLeader = ""
 
-convotype = 0
 # convotype 1 is 'leader of planet'
 # convotype 2 is 'love'
 

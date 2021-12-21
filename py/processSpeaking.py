@@ -1,8 +1,10 @@
 import sys
 
+sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/conversations')
 
 from processStatement import processStatement
+
 #from itIsAQuestion import itIsAQuestion
 
 def processSpeaking(user_input):

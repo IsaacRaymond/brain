@@ -170,6 +170,9 @@ def getHumanInput():
             else:
                 computerMove()
 
+    elif(check_for_words(move, ["stop"])):
+        gameIsActive = False
+
     elif(check_for_words(move, ["top","center"])):
         if checkIfOccupied([0,1]):
             playText("That space currently is occupied.")
