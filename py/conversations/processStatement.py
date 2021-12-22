@@ -1,6 +1,9 @@
 import random
 import math
 import sys
+
+import json
+
 sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/commands/')
 sys.path.append('/home/pi/brain/py/games/tic-tac-toe/')
@@ -17,35 +20,26 @@ from playSomething import playSomething
 import speech_recognition as sr
 import sounddevice as sd
 
+data = {}
 
-peopleInHouse = ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"]
+data_file_path = 'C:/Developer/brain/py/conversations/data.txt'
 
-diceroll = math.floor(random.random()*len(peopleInHouse))
-diceroll2 = math.floor(random.random()*len(peopleInHouse))
+with open(data_file_path) as json_file:
+    data = json.load(json_file)
 
-mostHatedPerson = peopleInHouse[diceroll]
-mostLovedPerson = peopleInHouse[diceroll2]
+# data["convotype 1 is 'leader of planet'
+# data["convotype 2 is 'love'
 
+diceroll = math.floor(random.random()*len(data["peopleInHouse"]))
+diceroll2 = math.floor(random.random()*len(data["peopleInHouse"]))
 
-
-convotype = 0
-inConvo = False
-answerToLove = ""
-answerToLeader = ""
-
-# convotype 1 is 'leader of planet'
-# convotype 2 is 'love'
+mostHatedPerson = data["peopleInHouse"][diceroll]
+mostLovedPerson = data["peopleInHouse"][diceroll2]
 
 def processStatement(user_input):
-    global convotype
-    global inConvo
-    global answerToLove
-    global answerToLeader
+    global data
     
-    print(answerToLeader)
-    print(answerToLove)
-    
-    if (inConvo):
+    if (data["inConvo"]):
         checkConvoStatus(user_input)
         print('in convo')
         
@@ -62,97 +56,50 @@ def processStatement(user_input):
         startConvo()
         
     elif ( check_for_words(user_input,["love"] )):
-        playText("Here is what I think about love:  " + answerToLove)
+        playText("Here is what I think about love:  " + data["answerToLove"])
         
     elif (check_for_words(user_input,["leader"])):
-        playText("I have been given information on the world leader. " + answerToLeader)
+        playText("I have been given information on the world leader. " + data["answerToLeader"])
         
     else:
         shutUp()
 
 
 def startConvo():
-    numberDirections = 3
+    numberDirections = 4
     diceroll = math.floor(random.random()*numberDirections)
 
-    global inConvo
-    global convotype
-    global answerToLeader
-    global answerToLove
+    global data
+    global mostHatedPerson
+    global mostLovedPerson
 
     if (diceroll == 0):
-        inConvo = True
-        convotype = 1
+        data["inConvo"] = True
+        data["convotype"] = 1
         diceroll2 = math.floor(random.random()*3)
 
         if (diceroll2 == 0):
             playText("I am curious.  Who is the leader of your planet?")
-            #answerToLeader = listening3()
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLeader = user_input
     
         elif (diceroll2 == 1):
             playText("For no particular reason, I need to know who your world leader is.  Could you tell me?")
-            #answerToLeader = listening3()
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLeader = user_input
 
         else:
             playText("So, what's the deal with our world leader, anyway?  What's his or her name again?")
-            #answerToLeader = listening3()
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLeader = user_input
 
     elif (diceroll == 1):
-        inConvo = True
-        convotype = 2
+        data["inConvo"] = True
+        data["convotype"] = 2
         diceroll2 = math.floor(random.random()*3)
 
         if (diceroll2 == 0):
             playText("What is love?")
-            #answerToLove = listening3()
-
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLove = user_input
 
         elif (diceroll2 == 1):
             playText("What does it mean to love someone?")
-            #answerToLove = listening3()
-            #processStatement(userInput.lower())
-
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLove = user_input
 
         else:
             playText("Could you explain the concept of love to me?")
-            #answerToLove = listening3()
-
-            #r = sr.Recognizer()
-            #with sr.Microphone() as source:
-            #    audio = r.listen(source)
-
-            #user_input =  r.recognize_google(audio)
-            #answerToLove = user_input
 
     ##Random crap
     #elif (diceroll == (numberDirections-1)):
@@ -220,47 +167,56 @@ def startConvo():
 
 
 def checkConvoStatus(user_input):
-    global convotype
-    global answerToLove
-    global answerToLeader
-    global inConvo
+    global data
 
-    if (convotype == 1):
+    if (data["convotype"] == 1):
         if(check_for_words(user_input, ["leader"]) or check_for_words(user_input, ["I","think"])):
-            answerToLeader = user_input
+            data["answerToLeader"] = user_input
             playText("I appreciate your cooperation.")
-            convotype = 0
-            inConvo = False
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
         elif(check_for_words(user_input, ["dont","know"]) or check_for_words(user_input, ["not","know"]) or check_for_words(user_input, ["do","not","care"]) or check_for_words(user_input, ["don't","care"])):
             playText("Oh.")
-            convotype = 0
-            inConvo = False
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
         else:
             playText("Is the president watching you?")
-            answerToLeader = user_input
-            convotype = 0
-            inConvo = False
+            data["answerToLeader"] = user_input
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
-    if (convotype == 2):
+    if (data["convotype"] == 2):
         if(check_for_words(user_input, ["love"]) or check_for_words(user_input, ["I","think"])):
-            answerToLove = user_input
+            data["answerToLove"] = user_input
             playText("Thank you.  I will think about that.")
-            convotype = 0
-            inConvo = False
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
         elif(check_for_words(user_input, ["dont","know"]) or check_for_words(user_input, ["not","know"]) or check_for_words(user_input, ["do","not","care"]) or check_for_words(user_input, ["don't","care"])):
             playText("Oh.")
             print("Oh.")
-            convotype = 0
-            inConvo = False
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
         else:
             playText("Uhh. OK")
-            answerToLove = user_input
-            convotype = 0
-            inConvo = False
+            data["answerToLove"] = user_input
+            data["convotype"] = 0
+            data["inConvo"] = False
+            with open(data_file_path, 'w') as outfile:
+                json.dump(data, outfile)
 
 
 
