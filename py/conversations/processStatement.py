@@ -4,6 +4,9 @@ import sys
 sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/commands/')
 sys.path.append('/home/pi/brain/py/games/tic-tac-toe/')
+sys.path.append('C:/Developer/brain/py/')
+sys.path.append('C:/Developer/brain/py/commands/')
+sys.path.append('C:/Developer/brain/py/games/tic-tac-toe/')
 
 from check_for_words import check_for_words
 from playText import playText
@@ -26,17 +29,18 @@ mostLovedPerson = peopleInHouse[diceroll2]
 
 
 convotype = 0
-
 inConvo = False
+answerToLove = ""
+answerToLeader = ""
 
 # convotype 1 is 'leader of planet'
 # convotype 2 is 'love'
 
 def processStatement(user_input):
     global convotype
-    answerToLove = ""
-    answerToLeader = ""
     global inConvo
+    global answerToLove
+    global answerToLeader
     
     print(answerToLeader)
     print(answerToLove)
@@ -71,71 +75,84 @@ def startConvo():
     numberDirections = 3
     diceroll = math.floor(random.random()*numberDirections)
 
+    global inConvo
+    global convotype
+    global answerToLeader
+    global answerToLove
+
     if (diceroll == 0):
-        #inConvo = True
+        inConvo = True
         convotype = 1
         diceroll2 = math.floor(random.random()*3)
 
         if (diceroll2 == 0):
             playText("I am curious.  Who is the leader of your planet?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLeader = listening3()
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
 
-            user_input =  r.recognize_google(audio)
-            answerToLeader = user_input
+            #user_input =  r.recognize_google(audio)
+            #answerToLeader = user_input
     
         elif (diceroll2 == 1):
             playText("For no particular reason, I need to know who your world leader is.  Could you tell me?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLeader = listening3()
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
 
-            user_input =  r.recognize_google(audio)
-            answerToLeader = user_input
+            #user_input =  r.recognize_google(audio)
+            #answerToLeader = user_input
+
         else:
             playText("So, what's the deal with our world leader, anyway?  What's his or her name again?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLeader = listening3()
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
 
-            user_input =  r.recognize_google(audio)
-            answerToLeader = user_input
+            #user_input =  r.recognize_google(audio)
+            #answerToLeader = user_input
 
-    if (diceroll == 1):
-        #inConvo = True
+    elif (diceroll == 1):
+        inConvo = True
         convotype = 2
         diceroll2 = math.floor(random.random()*3)
 
         if (diceroll2 == 0):
             playText("What is love?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLove = listening3()
 
-            user_input =  r.recognize_google(audio)
-            answerToLove = user_input
-            print(answerToLove)
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
+
+            #user_input =  r.recognize_google(audio)
+            #answerToLove = user_input
 
         elif (diceroll2 == 1):
             playText("What does it mean to love someone?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLove = listening3()
+            #processStatement(userInput.lower())
 
-            user_input =  r.recognize_google(audio)
-            answerToLove = user_input
-            print(answerToLove)
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
+
+            #user_input =  r.recognize_google(audio)
+            #answerToLove = user_input
 
         else:
             playText("Could you explain the concept of love to me?")
-            r = sr.Recognizer()
-            with sr.Microphone() as source:
-                audio = r.listen(source)
+            #answerToLove = listening3()
 
-            user_input =  r.recognize_google(audio)
-            answerToLove = user_input
-            print(answerToLove)
+            #r = sr.Recognizer()
+            #with sr.Microphone() as source:
+            #    audio = r.listen(source)
+
+            #user_input =  r.recognize_google(audio)
+            #answerToLove = user_input
 
     ##Random crap
     #elif (diceroll == (numberDirections-1)):
@@ -202,10 +219,59 @@ def startConvo():
             playText("Did you know that if you tie your underwear to a squirrel and then yell at it, the squirrel will explode?")
 
 
+def checkConvoStatus(user_input):
+    global convotype
+    global answerToLove
+    global answerToLeader
+    global inConvo
+
+    if (convotype == 1):
+        if(check_for_words(user_input, ["leader"]) or check_for_words(user_input, ["I","think"])):
+            answerToLeader = user_input
+            playText("I appreciate your cooperation.")
+            convotype = 0
+            inConvo = False
+
+        elif(check_for_words(user_input, ["dont","know"]) or check_for_words(user_input, ["not","know"]) or check_for_words(user_input, ["do","not","care"]) or check_for_words(user_input, ["don't","care"])):
+            playText("Oh.")
+            convotype = 0
+            inConvo = False
+
+        else:
+            playText("Is the president watching you?")
+            answerToLeader = user_input
+            convotype = 0
+            inConvo = False
+
+    if (convotype == 2):
+        if(check_for_words(user_input, ["love"]) or check_for_words(user_input, ["I","think"])):
+            answerToLove = user_input
+            playText("Thank you.  I will think about that.")
+            convotype = 0
+            inConvo = False
+
+        elif(check_for_words(user_input, ["dont","know"]) or check_for_words(user_input, ["not","know"]) or check_for_words(user_input, ["do","not","care"]) or check_for_words(user_input, ["don't","care"])):
+            playText("Oh.")
+            print("Oh.")
+            convotype = 0
+            inConvo = False
+
+        else:
+            playText("Uhh. OK")
+            answerToLove = user_input
+            convotype = 0
+            inConvo = False
+
+
+
 def listening():
     userInput = input("type your voice words")
     print(userInput)
     processStatement(userInput.lower())
+
+def listening3():
+    userInput = input("type your voice words")
+    return userInput
 
 def listening2():
     r = sr.Recognizer()
