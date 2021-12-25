@@ -7,6 +7,7 @@ import json
 sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/commands/')
 sys.path.append('/home/pi/brain/py/games/tic-tac-toe/')
+sys.path.append('/home/pi/brain/py/games/')
 sys.path.append('C:/Developer/brain/py/')
 sys.path.append('C:/Developer/brain/py/commands/')
 sys.path.append('C:/Developer/brain/py/games/tic-tac-toe/')
@@ -15,6 +16,7 @@ from check_for_words import check_for_words
 from playText import playText
 from shutUp import shutUp
 from tic_tac_toe import startGame
+from twentyQuestions import beginTwentyQuestions
 from playSomething import playSomething
 
 import speech_recognition as sr
@@ -22,7 +24,8 @@ import sounddevice as sd
 
 data = {}
 
-data_file_path = 'C:/Developer/brain/py/conversations/data.txt'
+#data_file_path = 'C:/Developer/brain/py/conversations/data.txt'
+data_file_path = '/home/pi/brain/py/conversations/data.txt'
 
 with open(data_file_path) as json_file:
     data = json.load(json_file)
@@ -45,6 +48,9 @@ def processStatement(user_input):
         
     elif (check_for_words(user_input, ["play", "tic"]) or check_for_words(user_input, ["play", "toe"])):
         startGame()
+        
+    elif (check_for_words(user_input, ["play", "question"]) or check_for_words(user_input, ["play", "questions"])):
+        beginTwentyQuestions()
 
     elif (check_for_words(user_input,["play"])):
         playSomething(user_input)

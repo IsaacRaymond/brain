@@ -15,6 +15,8 @@ avocado_2 = "/Users/isaacraymond/Desktop/ai/sounds/memes/iDontBelieveInSalads.wa
 iDontWantThat = "/Users/isaacraymond/Desktop/ai/sounds/memes/noIDontWantThat.wav"
 imVeryHungry = "/Users/isaacraymond/Desktop/ai/sounds/memes/imVeryHungry.wav"
 giveMeTheBread = "/Users/isaacraymond/Desktop/ai/sounds/memes/giveMeTheBread.wav"
+whyYouLittle = "/Users/isaacraymond/Desktop/ai/sounds/memes/whyYouLittle.wav"
+imCallingCorporate = "/Users/isaacraymond/Desktop/ai/sounds/memes/imCallingCorporate.wav"
 
 def playMeme():
     playsound(allMemes[math.floor(random.random()*len(allMemes))])
@@ -45,10 +47,13 @@ def amog_us():
         playsound(amog_us_2)
 
 def avocado():
-    diceroll = math.floor(random.random()*2)
+    diceroll = math.floor(random.random()*3)
 
     if diceroll == 1:
         playsound(avocado_1)
+        
+    elif diceroll == 2:
+        playsound(imCallingCorporate)
 
     else:
         playsound(avocado_2)
@@ -61,3 +66,6 @@ def im_very_hungry():
 
 def give_me_the_bread():
     playsound(giveMeTheBread)
+    
+def im_calling_corporate():
+    playsound(imCallingCorporate)

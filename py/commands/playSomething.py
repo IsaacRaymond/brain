@@ -23,6 +23,9 @@ def playSomething(user_input):
 
     elif ( check_for_words(user_input, ["us", "mug"]) or check_for_words(user_input, ["Among"]) or check_for_words(user_input, ["among"]) ):
         amog_us()
+        
+    elif ( check_for_words(user_input, ["calling"])):
+        im_calling_corporate()
 
     elif ( check_for_words(user_input, ["avocado"]) ):
         avocado()
@@ -53,6 +56,7 @@ avocado_2 = "/home/pi/brain/sounds/memes/iDontBelieveInSalads.wav"
 iDontWantThat = "/home/pi/brain/sounds/memes/noIDontWantThat.wav"
 imVeryHungry = "/home/pi/brain/sounds/memes/imVeryHungry.wav"
 giveMeTheBread = "/home/pi/brain/sounds/memes/giveMeTheBread.wav"
+imCallingCorporate = "/home/pi/brain/sounds/memes/imCallingCorporate.wav"
 
 def playMeme():
     play_wav_file(allMemes[math.floor(random.random()*len(allMemes))])
@@ -83,10 +87,13 @@ def amog_us():
         play_wav_file(amog_us_2)
 
 def avocado():
-    diceroll = math.floor(random.random()*2)
+    diceroll = math.floor(random.random()*3)
 
     if diceroll == 1:
         play_wav_file(avocado_1)
+        
+    elif diceroll == 2:
+        im_calling_corporate()
 
     else:
         play_wav_file(avocado_2)
@@ -99,6 +106,9 @@ def im_very_hungry():
 
 def give_me_the_bread():
     play_wav_file(giveMeTheBread)
+    
+def im_calling_corporate():
+    play_wav_file(imCallingCorporate)
     
 def play_wav_file(name_of_file):
     pygame.mixer.music.load(name_of_file)

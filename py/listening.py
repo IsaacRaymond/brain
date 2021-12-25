@@ -10,12 +10,12 @@ sys.path.append('/home/pi/brain/py')
 
 from processSpeaking import processSpeaking
 
-def listening():
+def listening2():
     userInput = input("type your voice words")
     print(userInput)
     processSpeaking(userInput.lower())
 
-def listening2():
+def listening():
     r = sr.Recognizer()
     with sr.Microphone() as source:
         audio = r.listen(source)
