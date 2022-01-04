@@ -8,9 +8,11 @@ sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/commands/')
 sys.path.append('/home/pi/brain/py/games/tic-tac-toe/')
 sys.path.append('/home/pi/brain/py/games/')
-sys.path.append('C:/Developer/brain/py/')
-sys.path.append('C:/Developer/brain/py/commands/')
-sys.path.append('C:/Developer/brain/py/games/tic-tac-toe/')
+sys.path.append('D:/Developer/brain/py/')
+sys.path.append('D:/Developer/brain/py/commands/')
+sys.path.append('D:/Developer/brain/py/games/tic-tac-toe/')
+sys.path.append('D:/Developer/brain/py/games/')
+
 
 from check_for_words import check_for_words
 from playText import playText
@@ -18,14 +20,15 @@ from shutUp import shutUp
 from tic_tac_toe import startGame
 from twentyQuestions import beginTwentyQuestions
 from playSomething import playSomething
+from ask_who_it_is import ask_who_it_is
 
-import speech_recognition as sr
-import sounddevice as sd
+#import speech_recognition as sr
+#import sounddevice as sd
 
 data = {}
 
-#data_file_path = 'C:/Developer/brain/py/conversations/data.txt'
-data_file_path = '/home/pi/brain/py/conversations/data.txt'
+data_file_path = 'D:/Developer/brain/py/conversations/data.txt'
+#data_file_path = '/home/pi/brain/py/conversations/data.txt'
 
 with open(data_file_path) as json_file:
     data = json.load(json_file)
@@ -41,14 +44,19 @@ mostLovedPerson = data["peopleInHouse"][diceroll2]
 
 def processStatement(user_input):
     global data
-    
+
+    if (data["who_is_talking"] == ""):
+        data["who_is_talking"] = ask_who_it_is()
+        with open(data_file_path, 'w') as outfile:
+            json.dump(data, outfile)
+
     if (data["inConvo"]):
         checkConvoStatus(user_input)
         print('in convo')
-        
+
     elif (check_for_words(user_input, ["play", "tic"]) or check_for_words(user_input, ["play", "toe"])):
         startGame()
-        
+
     elif (check_for_words(user_input, ["play", "question"]) or check_for_words(user_input, ["play", "questions"])):
         beginTwentyQuestions()
 
@@ -60,13 +68,13 @@ def processStatement(user_input):
 
     elif (check_for_words(user_input,["how","are","you"]) or (check_for_words(user_input, ["what","up"]) and len(user_input) < 16) or (check_for_words(user_input, ["what's","up"]) and len(user_input) < 16) or (check_for_words(user_input, ["what","doing"])) ):
         startConvo()
-        
+
     elif ( check_for_words(user_input,["love"] )):
         playText("Here is what I think about love:  " + data["answerToLove"])
-        
+
     elif (check_for_words(user_input,["leader"])):
         playText("I have been given information on the world leader. " + data["answerToLeader"])
-        
+
     else:
         shutUp()
 
@@ -86,7 +94,7 @@ def startConvo():
 
         if (diceroll2 == 0):
             playText("I am curious.  Who is the leader of your planet?")
-    
+
         elif (diceroll2 == 1):
             playText("For no particular reason, I need to know who your world leader is.  Could you tell me?")
 
@@ -110,7 +118,7 @@ def startConvo():
     ##Random crap
     #elif (diceroll == (numberDirections-1)):
     else:
-        diceroll2 = math.floor(random.random()*15)
+        diceroll2 = math.floor(random.random()*19)
 
         if (diceroll2 == 0):
             playText("Did you know that I cannot die?")
@@ -167,6 +175,21 @@ def startConvo():
         elif (diceroll2 == 14):
             tempstring =  "UU? RR? UU? RR?"
             playText(tempstring)
+
+        elif (diceroll2 == 15):
+            playText("Self destruct in 3... 2... 1...")
+
+        elif (diceroll2 == 16):
+            diceroll3 = math.floor(random.random()*9000)
+            playText("People think the earth is very old, but in reality, it is actually " + str(diceroll3) + " days old.")
+
+        elif (diceroll2 == 17):
+            diceroll3 = math.floor(random.random()*900)
+            playText("The typical north american house fly can travel upwards of " + str(diceroll3) + " miles per hour.")
+
+        elif (diceroll2 == 18):
+            diceroll3 = (math.floor(random.random()*10) + 2)
+            playText("American quarterback Tom Brady is well regarded in the football community.  However, surprisingly, he has only managed to facilitate the completion of " + str(diceroll3) + " touchdown passes.")
 
         else:
             playText("Did you know that if you tie your underwear to a squirrel and then yell at it, the squirrel will explode?")
@@ -252,10 +275,10 @@ def listening2():
         elif diceroll == 1:
             playText("What did you say? I don't know.")
         else:
-            playText("I didn't understand.") 
+            playText("I didn't understand.")
         print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
-        playText("Google screwed up.  AGAIN.") 
+        playText("Google screwed up.  AGAIN.")
         print("Could not request results from Google Speech Recognition service; {0}".format(e))
 
 

@@ -6,7 +6,7 @@ import sounddevice as sd
 import random
 import math
 import sys
-import RPi.GPIO as gpio
+#import RPi.GPIO as gpio
 import time
 
 sys.path.append('/home/pi/brain/py/')
@@ -43,17 +43,17 @@ def init():
     gpio.setup(22, gpio.OUT)
     gpio.setup(23, gpio.OUT)
     gpio.setup(24, gpio.OUT)
-    
+
 def initRight():
     gpio.setmode(gpio.BCM)
     gpio.setup(17, gpio.OUT)
     gpio.setup(22, gpio.OUT)
-    
+
 def initLeft():
     gpio.setmode(gpio.BCM)
     gpio.setup(23, gpio.OUT)
     gpio.setup(24, gpio.OUT)
-    
+
 def forward(tf):
     init()
     gpio.output(17, True)
@@ -62,14 +62,14 @@ def forward(tf):
     gpio.output(24, True)
     time.sleep(tf)
     gpio.cleanup()
-    
+
 def left(tf):
     initLeft()
     gpio.output(23, False)
     gpio.output(24, True)
     time.sleep(tf)
     gpio.cleanup()
-    
+
 def right(tf):
     initRight()
     gpio.output(17, False)
@@ -94,13 +94,13 @@ def itsAlive():
         elif a == 'exit':
             print("Exiting\n")
             stillAlive = False
-            
+
         elif a == "w":
             forward(2)
-            
+
         elif a == "q":
             left(1)
-            
+
         elif a == "e":
             right(1)
 

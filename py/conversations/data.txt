@@ -1,1 +1,1 @@
-{"convotype": 0, "inConvo": false, "answerToLove": "tacos", "answerToLeader": "obama", "peopleInHouse": ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"]}
+{"convotype": 0, "inConvo": false, "answerToLove": "", "answerToLeader": "", "peopleInHouse": ["Forrest", "Miles", "Jaycee", "Isaac", "Hobbes"], "who_is_talking": ""}

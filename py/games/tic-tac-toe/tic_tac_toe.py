@@ -3,12 +3,13 @@ import sounddevice as sd
 import speech_recognition as sr
 
 sys.path.append('/home/pi/brain/py/')
+sys.path.append('d:/developer/brain/py')
 
 import time
 import random
 import os
 import math
-import numpy as np
+#import numpy as np
 from check_for_words import check_for_words
 from playText import playText
 
@@ -151,7 +152,7 @@ def checkForWin():
 
 def getHumanInput():
     playText("What is your move?")
-    
+
 
     print("getting move")
     move = listening2()
@@ -276,4 +277,3 @@ def getHumanInput():
 
             else:
                 computerMove()
-

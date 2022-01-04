@@ -1,7 +1,7 @@
 import sys
 
-sys.path.append('C:/Developer/brain/py/')
-sys.path.append('C:/Developer/brain/py/conversations/')
+sys.path.append('D:/Developer/brain/py/')
+sys.path.append('D:/Developer/brain/py/conversations/')
 sys.path.append('/home/pi/brain/py/')
 sys.path.append('/home/pi/brain/py/conversations')
 
